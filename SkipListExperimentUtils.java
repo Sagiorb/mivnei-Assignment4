@@ -1,6 +1,11 @@
 public class SkipListExperimentUtils {
-    public static double measureLevels(double p, int x) {
-        throw new UnsupportedOperationException("Replace this by your implementation");
+      public static double measureLevels(double p, int x) {
+    	double count=0;
+    	IndexableSkipList sl=new IndexableSkipList(p);
+    	for(int i=0; i<x; i++) {
+    	  count=count+sl.generateHeight();
+      }
+    	return count/x;
     }
 
     /*
