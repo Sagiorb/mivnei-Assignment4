@@ -33,6 +33,38 @@ public class SkipListExperimentUtils {
     }
 
     public static void main(String[] args) {
-        System.exit(1); // Remove this line.
+                int x=10;
+        double p=0.33;
+        for(int j=0;j<4;j++) {
+	        for(int i=1;i<=5;i++) {
+	        	System.out.println("l"+ i + "=" + measureLevels(p,x));
+	        }
+	        x*=10;
+        }
+        x=10;
+        double p=0.5;
+        for(int j=0;j<4;j++) {
+	        for(int i=1;i<=5;i++) {
+	        	System.out.println("l"+ i + "=" + measureLevels(p,x));
+	        }
+	        x*=10;
+        }
+        x=10;
+        double p=0.75;
+        for(int j=0;j<4;j++) {
+	        for(int i=1;i<=5;i++) {
+	        	System.out.println("l"+ i + "=" + measureLevels(p,x));
+	        }
+	        x*=10;
+        }
+        x=10;
+        double p=0.9;
+        for(int j=0;j<4;j++) {
+	        for(int i=1;i<=5;i++) {
+	        	System.out.println("l"+ i + "=" + measureLevels(p,x));
+	        }
+	        x*=10;
+        }
+        
     }
 }
