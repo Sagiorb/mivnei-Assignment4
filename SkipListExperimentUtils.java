@@ -176,19 +176,23 @@ public class SkipListExperimentUtils {
         System.out.println("");
     
 	
-        double[]arrP={0.33, 0.5, 0.75, 0.9};
+    	double[]arrP={0.33, 0.5, 0.75, 0.9};
     	int[]arrX={1000,2500,5000,10000,15000,20000,50000};   	
     	for(int i=0;i<arrP.length;i++) {
     		for(int j=0; j<arrX.length; j++) {
-    			double count=0;
+    			double countInsert=0;
+    			double countSearch=0;
     			for(int k=0;k<30;k++) {
     				Pair<AbstractSkipList, Double> pair=measureInsertions(arrP[i], arrX[j]);
-    				count=count+pair.second();
+    				countInsert=countInsert+pair.second();
+    				countSearch=measureSearch(pair.first(), arrX[i]);
     			}
-    			count=count/30;	
-    			System.out.println("the average time of insertion with p=" + arrP[i]+ " " + "and x=" +arrX[j]+ " is: " + count);
+    			countInsert=countInsert/30;	
+    			System.out.println("the average time of insertion with p=" + arrP[i]+ " and x=" +arrX[j]+ " is: " + countInsert);
+    			System.out.println("the average time of search with p=" + arrP[i]+ " and x=" +arrX[j]+ " is: " + countSearch);
     		}	
     	}
+    	
     	for(int i=0;i<arrP.length;i++) {
     		for(int j=0; j<arrX.length; j++) {
     			double count=0;
