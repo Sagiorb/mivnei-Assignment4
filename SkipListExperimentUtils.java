@@ -182,29 +182,20 @@ public class SkipListExperimentUtils {
     		for(int j=0; j<arrX.length; j++) {
     			double countInsert=0;
     			double countSearch=0;
+    			double countDeletion=0;
     			for(int k=0;k<30;k++) {
     				Pair<AbstractSkipList, Double> pair=measureInsertions(arrP[i], arrX[j]);
-    				countInsert=countInsert+pair.second();
-    				countSearch=countSearch+measureSearch(pair.first(), arrX[i]);
+    				countInsert+=countInsert+pair.second();
+    				countSearch+=measureSearch(pair.first(), arrX[i]);
+    				countDeletion+=measureDeletions(pair.first(), arrX[j]);
     			}
     			countInsert=countInsert/30;
-			countSearch=countSearch/30;		
+    			countSearch=countSearch/30;	
+    			countDeletion=countDeletion/30;	
     			System.out.println("the average time of insertion with p=" + arrP[i]+ " and x=" +arrX[j]+ " is: " + countInsert);
     			System.out.println("the average time of search with p=" + arrP[i]+ " and x=" +arrX[j]+ " is: " + countSearch);
+    			System.out.println("the average time of search with p=" + arrP[i]+ " and x=" +arrX[j]+ " is: " + countDeletion);
     		}	
-    	}
-    	
-    	for(int i=0;i<arrP.length;i++) {
-    		for(int j=0; j<arrX.length; j++) {
-    			double count=0;
-    			Pair<AbstractSkipList, Double> pairOG=measureInsertions(arrP[i], arrX[j]);
-    			for(int k=0;k<30;k++) {
-    				Pair<AbstractSkipList, Double> pair=pairOG;
-    				count+=measureDeletions(pair.first(), arrX[j]);
-    			}
-    			count=count/30;	
-    			System.out.println("the average time of deletion with p=" + arrP[i]+ " " + "and x=" +arrX[j]+ " is: " + count);
-    		}	
-    	} 	
+    	}	
     }
 }
