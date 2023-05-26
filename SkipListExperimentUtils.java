@@ -196,8 +196,9 @@ public class SkipListExperimentUtils {
     	for(int i=0;i<arrP.length;i++) {
     		for(int j=0; j<arrX.length; j++) {
     			double count=0;
+    			Pair<AbstractSkipList, Double> pairOG=measureInsertions(arrP[i], arrX[j]);
     			for(int k=0;k<30;k++) {
-    				Pair<AbstractSkipList, Double> pair=measureInsertions(arrP[i], arrX[j]);
+    				Pair<AbstractSkipList, Double> pair=pairOG;
     				count+=measureDeletions(pair.first(), arrX[j]);
     			}
     			count=count/30;	
