@@ -194,7 +194,7 @@ public class SkipListExperimentUtils {
     			countDeletion=countDeletion/30;	
     			System.out.println("the average time of insertion with p=" + arrP[i]+ " and x=" +arrX[j]+ " is: " + countInsert);
     			System.out.println("the average time of search with p=" + arrP[i]+ " and x=" +arrX[j]+ " is: " + countSearch);
-    			System.out.println("the average time of search with p=" + arrP[i]+ " and x=" +arrX[j]+ " is: " + countDeletion);
+    			System.out.println("the average time of deletion with p=" + arrP[i]+ " and x=" +arrX[j]+ " is: " + countDeletion);
     		}	
     	}	
     }
