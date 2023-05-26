@@ -185,7 +185,7 @@ public class SkipListExperimentUtils {
     			for(int k=0;k<30;k++) {
     				Pair<AbstractSkipList, Double> pair=measureInsertions(arrP[i], arrX[j]);
     				countInsert=countInsert+pair.second();
-    				countSearch=measureSearch(pair.first(), arrX[i]);
+    				countSearch=countSearch+measureSearch(pair.first(), arrX[i]);
     			}
     			countInsert=countInsert/30;
 			countSearch=countSearch/30;		
