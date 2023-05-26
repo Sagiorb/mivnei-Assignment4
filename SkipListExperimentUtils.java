@@ -1,3 +1,5 @@
+import org.w3c.dom.Node;
+
 public class SkipListExperimentUtils {
     public static double measureLevels(double p, int x) {
     	double count=0;
@@ -79,8 +81,24 @@ public class SkipListExperimentUtils {
     }
 
     public static double measureDeletions(AbstractSkipList skipList, int size) {
-        throw new UnsupportedOperationException("Replace this by your implementation");
+    	int[]arr=chooseRandInsertions(size);
+    	AbstractSkipList.Node[] arrDelete=insertRandomDelToArr(arr,skipList);
+    	double t_s=System.nanoTime();
+    	for(int i=0;i<arr.length;i++) {	
+    	    skipList.delete(arrDelete[i]); 
+    	}
+    	double t_f=System.nanoTime();
+    	double diff=t_f-t_s;
+    	return diff;
     }
+    private static AbstractSkipList.Node[] insertRandomDelToArr(int [] arr, AbstractSkipList skipList) {//creating an array to of the nodes in the skiplist so we can delete it randomly
+    	AbstractSkipList.Node[] res=new AbstractSkipList.Node[arr.length];
+    	for(int i=0;i<arr.length;i++) {
+    		res[i]=skipList.search(arr[i]);
+    	}
+    	return res;
+    }
+    private static skipLi
 
     public static void main(String[] args) {
         int x=10;
@@ -157,9 +175,9 @@ public class SkipListExperimentUtils {
         }
         System.out.println("E[ℓ] =" + 1/p);
         System.out.println("");
-    }
+    
 	
-	double[]arrP={0.33, 0.5, 0.75, 0.9};
+        double[]arrP={0.33, 0.5, 0.75, 0.9};
     	int[]arrX={1000,2500,5000,10000,15000,20000,50000};   	
     	for(int i=0;i<arrP.length;i++) {
     		for(int j=0; j<arrX.length; j++) {
@@ -170,6 +188,17 @@ public class SkipListExperimentUtils {
     			}
     			count=count/30;	
     			System.out.println("the average time of insertion with p=" + arrP[i]+ " " + "and x=" +arrX[j]+ " is: " + count);
+    		}	
+    	}
+    	for(int i=0;i<arrP.length;i++) {
+    		for(int j=0; j<arrX.length; j++) {
+    			double count=0;
+    			for(int k=0;k<30;k++) {
+    				Pair<AbstractSkipList, Double> pair=measureInsertions(arrP[i], arrX[j]);
+    				count+=measureDeletions(pair.first(), arrX[j]);
+    			}
+    			count=count/30;	
+    			System.out.println("the average time of deletion with p=" + arrP[i]+ " " + "and x=" +arrX[j]+ " is: " + count);
     		}	
     	} 	
     }
