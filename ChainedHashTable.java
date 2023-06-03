@@ -53,6 +53,7 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
         int hashIndex=hashFunc.hash(key);
         Pair<K,V> add=new Pair<K, V>(key,value);
         arrHash[hashIndex].add(add);
+        count++;
     }
 
     public boolean delete(K key) {
@@ -64,6 +65,7 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
 			if(curr.first()==key) {
 				arrHash[deleteIndex].remove(curr);
 				deleted=true;
+				count--;
 			}
         }
         return deleted;
