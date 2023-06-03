@@ -47,7 +47,7 @@ public class ProbingHashTable<K, V> implements HashTable<K, V> {
     }
 
     public void insert(K key, V value) {
-        if (this.count/this.capacity >= 1) {
+        if ((double)this.count/this.capacity >= maxLoadFactor) {
         	reHash();
         }
         Pair<K,V> p=new Pair<>(key, value);
