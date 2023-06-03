@@ -96,7 +96,7 @@ public class ProbingHashTable<K, V> implements HashTable<K, V> {
     	this.capacity=this.capacity*2;
     	for(int i=0;i<this.capacity;i++) {
     		if(oldArr[i]==null || oldArr[i].first()==null)
-    		insert(oldArr[i].first(), oldArr[i].second());
+    			insert(oldArr[i].first(), oldArr[i].second());
     	}
     }
     
