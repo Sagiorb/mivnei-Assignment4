@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ListIterator;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -9,6 +10,8 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
     final private double maxLoadFactor;
     private int capacity;
     private HashFunctor<K> hashFunc;
+    private int count;//to count how many elements are in the table
+    private LinkedList<Pair<K,V>>[] arrHash;
 
 
     /*
@@ -24,18 +27,46 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
         this.maxLoadFactor = maxLoadFactor;
         this.capacity = 1 << k;
         this.hashFunc = hashFactory.pickHash(k);
+        this.count=0;
+        this.arrHash= new LinkedList[capacity];
     }
 
     public V search(K key) {
-        throw new UnsupportedOperationException("Replace this by your implementation");
+        boolean found=false;
+        V res=null;
+        int searchIndex=hashFunc.hash(key);
+        ListIterator<Pair<K,V>> it = arrHash[searchIndex].listIterator();
+        while(it.hasNext()&&!found) {
+			Pair<K,V> curr=it.next();
+			if(curr.first()==key) {
+				res=curr.second();
+				found=true;
+			}
+        }
+        return res;
     }
 
     public void insert(K key, V value) {
-        throw new UnsupportedOperationException("Replace this by your implementation");
+        if(count == capacity*maxLoadFactor) {
+        	reHash();
+        }
+        int hashIndex=hashFunc.hash(key);
+        Pair<K,V> add=new Pair<K, V>(key,value);
+        arrHash[hashIndex].add(add);
     }
 
     public boolean delete(K key) {
-        throw new UnsupportedOperationException("Replace this by your implementation");
+        boolean deleted=false;
+        int deleteIndex=hashFunc.hash(key);
+        ListIterator<Pair<K,V>> it = arrHash[deleteIndex].listIterator();
+        while(it.hasNext()&&!deleted) {
+			Pair<K,V> curr=it.next();
+			if(curr.first()==key) {
+				arrHash[deleteIndex].remove(curr);
+				deleted=true;
+			}
+        }
+        return deleted;
     }
 
     public HashFunctor<K> getHashFunc() {
@@ -43,4 +74,25 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
     }
 
     public int capacity() { return capacity; }
+    
+    private void reHash() {
+    	int k = (int) (Math.log(capacity) / Math.log(2));
+    	capacity = 1 << k;
+    	this.hashFunc = hashFactory.pickHash(k);
+    	LinkedList<Pair<K,V>>[] reArr=new LinkedList[capacity];
+    	for(int i=0;i<arrHash.length;i++) {
+    		
+    		if(!arrHash[i].isEmpty()) {
+    			ListIterator<Pair<K,V>> it = arrHash[i].listIterator();
+    			while(it.hasNext()) {
+    				Pair<K,V> curr=it.next();
+        			K key=curr.first();
+        	    	int insertIndex=hashFunc.hash(key);
+        	    	reArr[insertIndex].add(curr);
+    			}
+    		}
+    		arrHash=reArr;
+    	}
+    	
+    }
 }
