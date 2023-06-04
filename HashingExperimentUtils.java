@@ -3,13 +3,32 @@ import java.util.Collections; // can be useful
 public class HashingExperimentUtils<K> {
     final private static int k = 16;
     private static HashFactory<?> hashFactory;
+   // @SuppressWarnings("unchecked")
     public static Pair<Double, Double> measureOperationsChained(double maxLoadFactor) {
-        throw new UnsupportedOperationException("Replace this by your implementation");
+    	hashFactory=new ModularHash();
+    	ChainedHashTable<Integer, Integer> cht = new ChainedHashTable<Integer, Integer>((HashFactory<Integer>) hashFactory, k, maxLoadFactor);
+    	int size=(int)(cht.capacity() * maxLoadFactor);
+    	int[]arr = chooseRandInsertions(size);
+    	double t_s_i = System.nanoTime();
+    	for(int i=0;i<arr.length;i++) {
+    		cht.insert(arr[i],1); //keep 1?
+    	}
+    	double t_f_i = System.nanoTime();
+    	double diffI = t_f_i - t_s_i;
+    	int[]arrToSearch=createArrToSearch(size ,arr);
+    	double t_s_s = System.nanoTime();
+    	for(int i=0;i<arrToSearch.length;i++) {
+    		cht.search(arrToSearch[i]);
+    	}
+    	double t_f_s = System.nanoTime();
+    	double diffS = t_f_s - t_s_s;
+        return new Pair<>(diffI, diffS);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Pair<Double, Double> measureOperationsProbing(double maxLoadFactor) {
-    	ProbingHashTable pht = new ProbingHashTable(hashFactory.pickHash((int) Math.pow(2.0, (double) k)), k, maxLoadFactor);//the problem is here
+    	hashFactory=new ModularHash();
+     	ProbingHashTable pht = new ProbingHashTable(hashFactory, k, maxLoadFactor);//the problem is here
     	int size=(int)(pht.capacity() * maxLoadFactor);
     	int[]arr = chooseRandInsertions(size);
     	double t_s_i = System.nanoTime();
@@ -58,7 +77,7 @@ public class HashingExperimentUtils<K> {
     	int index=(int)(Math.ceil((double)res.length/2)+1);
         while (index < res.length) {
             double ranN = Math.ceil(Math.random() * (Integer.MAX_VALUE));
-            if (!contains(arr, (int) ranN, index)) {
+            if (!contains(arr, (int) ranN, size)) {
                 res[index] = (int) ranN;
                 index++;
             }
@@ -88,6 +107,19 @@ public class HashingExperimentUtils<K> {
         	System.out.println("The avg insertion time with linear probing with max load factor of "+mlf[i]+" is: "+(avgInsert/30));
         	System.out.println("The avg search time with linear probing with max load factor of "+mlf[i]+" is: "+(avgSearch/30));
         }
-        
+
+    	double[] rlf ={0.5, 0.75, 1.0, 1.5, 2.0};
+        for(int i=0;i<rlf.length;i++) {
+        	double avgInsert=0;
+            double avgSearch=0;
+        	for(int j=0;j<30;j++) {
+        		Pair<Double, Double> res=new Pair(0, 0);
+        		res=measureOperationsChained((double)rlf[i]);
+        		avgInsert=avgInsert+res.first();
+        		avgSearch=avgSearch+res.second();
+        	}
+        	System.out.println("The avg insertion time with chained hashing with max load factor of "+rlf[i]+" is: "+(avgInsert/30));
+        	System.out.println("The avg search time with chained hashing with max load factor of "+rlf[i]+" is: "+(avgSearch/30));
+        }
     }
 }
