@@ -29,6 +29,9 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
         this.hashFunc = hashFactory.pickHash(k);
         this.count=0;
         this.arrHash= new LinkedList[capacity];
+        for (int i = 0; i < arrHash.length; i++) {
+            arrHash[i] = new LinkedList<>();
+        }
     }
 
     public V search(K key) {
