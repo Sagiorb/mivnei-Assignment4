@@ -32,19 +32,19 @@ public class ProbingHashTable<K, V> implements HashTable<K, V> {
     }
 
     public V search(K key) {
-    	int toSearch=hashFunc.hash(key);
-    	V res=null;
-    	boolean found=false;
-    	for(int i=0;i<this.capacity && !found;i++) {
-    		if(arrH[toSearch].first() == key) {
-    			res=arrH[toSearch].second();
-    			found=true;
-    			toSearch=HashingUtils.mod(toSearch+1, this.capacity);
-    		}
-    	}
-    	return res;
-        
+        int toSearch = hashFunc.hash(key);
+        V res = null;
+        boolean found = false;
+        for (int i = 0; i < this.capacity && !found; i++) {
+            if (arrH[toSearch] != null && arrH[toSearch].first() == key) {
+                res = arrH[toSearch].second();
+                found = true;
+                toSearch = HashingUtils.mod(toSearch + 1, this.capacity);
+            }
+        }
+        return res;
     }
+
 
     public void insert(K key, V value) {
         if ((double)this.count/this.capacity >= maxLoadFactor) {
