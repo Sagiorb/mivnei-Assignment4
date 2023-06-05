@@ -109,15 +109,15 @@ public class SkipListExperimentUtils {
         	System.out.println("x="+x);
 	        for(int i=1;i<=5;i++) {
 	        	arr[i]=measureLevels(p,x)+1;//measure the level for each x in specific p
-	        	System.out.println("ℓ"+ i + "=" + arr[i]);
-	        	delta=delta +Math.abs(arr[i]-(1/p));//adding all the ℓ for calculating the delta in the end of each X
+	        	System.out.println("l"+ i + "=" + arr[i]);
+	        	delta=delta +Math.abs(arr[i]-(1/p));//adding all the l for calculating the delta in the end of each X
 	        }
 	        delta=0.2*delta;
 	        System.out.println("the delta is: " + delta);
 	        delta=0;
 	        x*=10;
         }
-        System.out.println("E[ℓ] =" + 1/p);
+        System.out.println("E[l] =" + 1/p);
         
         System.out.println("");
         x=10;
@@ -128,15 +128,15 @@ public class SkipListExperimentUtils {
         	System.out.println("x="+x);
 	        for(int i=1;i<=5;i++) {
 	        	arr[i]=measureLevels(p,x)+1;//measure the level for each x in specific p
-	        	System.out.println("ℓ"+ i + "=" + arr[i]);
-	        	delta=delta + Math.abs(arr[i]-(1/p));//adding all the ℓ for calculating the delta in the end of each X
+	        	System.out.println("l"+ i + "=" + arr[i]);
+	        	delta=delta + Math.abs(arr[i]-(1/p));//adding all the l for calculating the delta in the end of each X
 	        }
 	        delta=0.2*delta;
 	        System.out.println("the delta is: " + delta);
 	        delta=0;
 	        x*=10;
         }
-        System.out.println("E[ℓ] =" + 1/p);
+        System.out.println("E[l] =" + 1/p);
         System.out.println("");
         System.out.println("p=0.75");
         x=10;
@@ -146,15 +146,15 @@ public class SkipListExperimentUtils {
         	System.out.println("x="+x);
 	        for(int i=1;i<=5;i++) {
 	        	arr[i]=measureLevels(p,x)+1;//measure the level for each x in specific p
-	        	System.out.println("ℓ"+ i + "=" + arr[i]);
-	        	delta=delta + Math.abs(arr[i]-(1/p));//adding all the ℓ for calculating the delta in the end of each X
+	        	System.out.println("l"+ i + "=" + arr[i]);
+	        	delta=delta + Math.abs(arr[i]-(1/p));//adding all the l for calculating the delta in the end of each X
 	        }
 	        delta=0.2*delta;
 	        System.out.println("the delta is: " + delta);
 	        delta=0;
 	        x*=10;
         }
-        System.out.println("E[ℓ] =" + 1/p);
+        System.out.println("E[l] =" + 1/p);
         System.out.println("");
         x=10;
         p=0.9;
@@ -164,15 +164,15 @@ public class SkipListExperimentUtils {
         	System.out.println("x="+x);
 	        for(int i=1;i<=5;i++) {
 	        	arr[i]=measureLevels(p,x)+1;//measure the level for each x in specific p
-	        	System.out.println("ℓ"+ i + "=" + arr[i]);
-	        	delta=delta + Math.abs(arr[i]-(1/p));//adding all the ℓ for calculating the delta in the end of each X
+	        	System.out.println("l"+ i + "=" + arr[i]);
+	        	delta=delta + Math.abs(arr[i]-(1/p));//adding all the l for calculating the delta in the end of each X
 	        }
 	        delta=0.2*delta;
 	        System.out.println("the delta is: " + delta);
 	        delta=0;
 	        x*=10;
         }
-        System.out.println("E[ℓ] =" + 1/p);
+        System.out.println("E[l] =" + 1/p);
         System.out.println("");
     
 	
