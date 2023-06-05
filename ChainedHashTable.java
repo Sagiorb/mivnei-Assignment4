@@ -81,20 +81,19 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
     public int capacity() { return capacity; }
     
     private void reHash() {
-    	int k = (int) (Math.log(capacity) / Math.log(2));
-    	capacity = 1 << k;
+    	int k = (int) (Math.log(capacity) / Math.log(2)) + 1;
+    	capacity = capacity*2;
     	this.hashFunc = hashFactory.pickHash(k);
     	LinkedList<Pair<K,V>>[] reArr=new LinkedList[capacity];
-    	for(int i=0;i<arrHash.length;i++) {
-    		
-    		if(!arrHash[i].isEmpty()) {
-    			ListIterator<Pair<K,V>> it = arrHash[i].listIterator();
-    			while(it.hasNext()) {
-    				Pair<K,V> curr=it.next();
-        			K key=curr.first();
-        	    	int insertIndex=hashFunc.hash(key);
-        	    	reArr[insertIndex].add(curr);
-    			}
+        for (int i = 0; i < reArr.length; i++) {
+            reArr[i] = new LinkedList<>();
+        }
+    	for(int i=0;i<arrHash.length;i++) {   
+    		while(!arrHash[i].isEmpty()) {
+    			Pair<K,V> curr=arrHash[i].removeFirst();    			
+    			K key=curr.first();
+    	    	int insertIndex=hashFunc.hash(key);
+    	    	reArr[insertIndex].add(curr);
     		}
     		arrHash=reArr;
     	}
