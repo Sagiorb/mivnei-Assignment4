@@ -87,13 +87,13 @@ public class HashingExperimentUtils<K> {
 
     public static Pair<Double, Double> measureLongOperations() {
     	hashFactory=new MultiplicativeShiftingHash();
-    	ChainedHashTable<Integer, Integer> cht = new ChainedHashTable<Integer, Integer>((HashFactory<Integer>) hashFactory, k, 1);
+    	ChainedHashTable<Long, Long> cht = new ChainedHashTable<Long, Long>((HashFactory<Long>) hashFactory, k, 1);
     	int size=(int)(cht.capacity());
     	HashingUtils hashingUtils = new HashingUtils();
     	Long [] arr = hashingUtils.genUniqueLong(size);
     	double t_s_i = System.nanoTime();
     	for(int i=0;i<arr.length;i++) {
-    		cht.insert(arr[i],1); //keep 1?
+    		cht.insert(arr[i],(long) 1); //keep 1?
     	}
     	double t_f_i = System.nanoTime();
     	double diffI = t_f_i - t_s_i;
