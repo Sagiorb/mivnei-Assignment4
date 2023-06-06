@@ -86,10 +86,59 @@ public class HashingExperimentUtils<K> {
     }
 
     public static Pair<Double, Double> measureLongOperations() {
-        throw new UnsupportedOperationException("Replace this by your implementation");
+    	hashFactory=new MultiplicativeShiftingHash();
+    	ChainedHashTable<Integer, Integer> cht = new ChainedHashTable<Integer, Integer>((HashFactory<Integer>) hashFactory, k, 1);
+    	int size=(int)(cht.capacity());
+    	HashingUtils hashingUtils = new HashingUtils();
+    	Long [] arr = hashingUtils.genUniqueLong(size);
+    	double t_s_i = System.nanoTime();
+    	for(int i=0;i<arr.length;i++) {
+    		cht.insert(arr[i],1); //keep 1?
+    	}
+    	double t_f_i = System.nanoTime();
+    	double diffI = t_f_i - t_s_i;
+    	Long[]arrToSearch=createArrToSearchLong(size ,arr);
+    	double t_s_s = System.nanoTime();
+    	for(int i=0;i<arrToSearch.length;i++) {
+    		cht.search(arrToSearch[i]);
+    	}
+    	double t_f_s = System.nanoTime();
+    	double diffS = t_f_s - t_s_s;
+        return new Pair<>(diffI, diffS);
+    }
+    	
+    
+
+    private static Long[] createArrToSearchLong(int size, Long[] arr) {
+        Long[] res = new Long[size * 2];
+        HashingUtils hashingUtils = new HashingUtils();
+        int index = 0;
+        for (int i = 0; i < Math.ceil((double) res.length / 2); i++) {
+            res[i] = arr[i];
+            index++;
+        }
+        while (index < res.length) {
+            Long genLong = hashingUtils.genLong(Long.MIN_VALUE, Long.MAX_VALUE);
+            if (!containsLong(res, genLong, index)) {
+                res[index] = genLong;
+                index++;
+            }
+        }
+        return res;
     }
 
-    public static Pair<Double, Double> measureStringOperations() {
+
+    private static boolean containsLong(Long[] arr, Long num, int endIndex) {
+        for (int i = 0; i < endIndex; i++) {
+            if (arr[i] != null && arr[i].equals(num)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+	public static Pair<Double, Double> measureStringOperations() {
         throw new UnsupportedOperationException("Replace this by your implementation");
     }
 
