@@ -38,7 +38,7 @@ abstract public class AbstractSkipList {
         if (prevNode.key() == key) {
             return null;
         }
-
+        
         Node newNode = new Node(key);
 
         for (int level = 0; level <= nodeHeight && prevNode != null; ++level) {
@@ -47,9 +47,10 @@ abstract public class AbstractSkipList {
             newNode.addLevel(nextNode, prevNode);
             prevNode.setNext(level, newNode);
             nextNode.setPrev(level, newNode);
-
+            //added
+            newNode.count+=prevNode.getCount();
             while (prevNode != null && prevNode.height() == level) {
-                prevNode = prevNode.getPrev(level);
+                newNode.count+=prevNode.getCount();
             }
         }
 
@@ -119,12 +120,14 @@ abstract public class AbstractSkipList {
         final private List<Node> prev;
         private int height;
         final private int key;
+        private int count;
 
         public Node(int key) {
             next = new ArrayList<>();
             prev = new ArrayList<>();
             this.height = -1;
             this.key = key;
+            count = 1;
         }
 
         public Node getPrev(int level) {
@@ -165,6 +168,10 @@ abstract public class AbstractSkipList {
             this.prev.add(prev);
         }
 
+        //added
+        public int getCount() {
+        	return count;
+        }
         public int height() { return height; }
         public int key() { return key; }
     }
