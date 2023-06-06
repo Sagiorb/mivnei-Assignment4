@@ -50,7 +50,7 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
     }
 
     public void insert(K key, V value) {
-        if(count == capacity*maxLoadFactor) {
+        if((count+1) == capacity*maxLoadFactor) {
         	reHash();
         }
         int hashIndex=hashFunc.hash(key);
