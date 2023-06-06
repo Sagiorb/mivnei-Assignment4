@@ -1,5 +1,6 @@
 import java.util.NoSuchElementException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 abstract public class AbstractSkipList {
@@ -40,17 +41,21 @@ abstract public class AbstractSkipList {
         }
         
         Node newNode = new Node(key);
-
+        //added
+        int count=0;
         for (int level = 0; level <= nodeHeight && prevNode != null; ++level) {
-            Node nextNode = prevNode.getNext(level);
+            
+        	Node nextNode = prevNode.getNext(level);
 
             newNode.addLevel(nextNode, prevNode);
             prevNode.setNext(level, newNode);
             nextNode.setPrev(level, newNode);
             //added
-            newNode.count+=prevNode.getCount();
+            newNode.countArr[level]+=count;
             while (prevNode != null && prevNode.height() == level) {
-                newNode.count+=prevNode.getCount();
+            	prevNode = prevNode.getPrev(level);
+                //added
+                count++;
             }
         }
 
@@ -120,14 +125,14 @@ abstract public class AbstractSkipList {
         final private List<Node> prev;
         private int height;
         final private int key;
-        private int count;
+        private int[] countArr;
 
         public Node(int key) {
             next = new ArrayList<>();
             prev = new ArrayList<>();
             this.height = -1;
             this.key = key;
-            count = 1;
+            countArr = new int[1];
         }
 
         public Node getPrev(int level) {
@@ -169,10 +174,16 @@ abstract public class AbstractSkipList {
         }
 
         //added
-        public int getCount() {
-        	return count;
+        public int[] getCountArr() {
+        	return countArr;
         }
         public int height() { return height; }
         public int key() { return key; }
+        public void setCountArr(int length) {
+        	countArr=new int[length];
+        	for(int i = 0;i<length;i++) {
+        		countArr[i]=1;
+        	}
+        }
     }
 }
