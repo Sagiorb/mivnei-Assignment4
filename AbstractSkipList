@@ -55,7 +55,7 @@ abstract public class AbstractSkipList {
             while (prevNode != null && prevNode.height() == level) {
             	prevNode = prevNode.getPrev(level);
                 //added
-                count++;
+                count+=prevNode.countArr[level];
             }
         }
 
