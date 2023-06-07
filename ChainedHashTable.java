@@ -38,13 +38,15 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
         boolean found=false;
         V res=null;
         int searchIndex=hashFunc.hash(key);
-        ListIterator<Pair<K,V>> it = arrHash[searchIndex].listIterator();
-        while(it.hasNext()&&!found) {
-			Pair<K,V> curr=it.next();
-			if(curr.first()==key) {
-				res=curr.second();
-				found=true;
-			}
+        if(!arrHash[searchIndex].isEmpty()) {	
+	        ListIterator<Pair<K,V>> it = arrHash[searchIndex].listIterator();
+	        while(it.hasNext()&&!found) {
+				Pair<K,V> curr=it.next();
+				if(curr.first()==key) {
+					res=curr.second();
+					found=true;
+				}
+	        }
         }
         return res;
     }
