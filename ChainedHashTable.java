@@ -38,13 +38,13 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
         boolean found=false;
         V res=null;
         int searchIndex=hashFunc.hash(key);
-        if(!arrHash[searchIndex].isEmpty()) {	
+        if(arrHash[searchIndex]!=null&&!arrHash[searchIndex].isEmpty()) {
 	        ListIterator<Pair<K,V>> it = arrHash[searchIndex].listIterator();
 	        while(it.hasNext()&&!found) {
 				Pair<K,V> curr=it.next();
-				if(curr.first()==key) {
-					res=curr.second();
+				if(curr.first().equals(key)) {
 					found=true;
+					res=curr.second();
 				}
 	        }
         }
@@ -57,21 +57,23 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
         }
         int hashIndex=hashFunc.hash(key);
         Pair<K,V> add=new Pair<K, V>(key,value);
-        arrHash[hashIndex].add(add);
+        arrHash[hashIndex].addFirst(add);
         count++;
     }
 
     public boolean delete(K key) {
         boolean deleted=false;
         int deleteIndex=hashFunc.hash(key);
-        ListIterator<Pair<K,V>> it = arrHash[deleteIndex].listIterator();
-        while(it.hasNext()&&!deleted) {
-			Pair<K,V> curr=it.next();
-			if(curr.first()==key) {
-				arrHash[deleteIndex].remove(curr);
-				deleted=true;
-				count--;
-			}
+        if(!arrHash[deleteIndex].isEmpty()) {
+	        ListIterator<Pair<K,V>> it = arrHash[deleteIndex].listIterator();
+	        while(it.hasNext()&&!deleted) {
+				Pair<K,V> curr=it.next();
+				if(curr.first()==key) {
+					arrHash[deleteIndex].remove(curr);
+					deleted=true;
+					count--;
+				}
+	        }
         }
         return deleted;
     }
@@ -95,7 +97,7 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
     			Pair<K,V> curr=arrHash[i].removeFirst();    			
     			K key=curr.first();
     	    	int insertIndex=hashFunc.hash(key);
-    	    	reArr[insertIndex].add(curr);
+    	    	reArr[insertIndex].addFirst(curr);
     		}
     		arrHash=reArr;
     	}
