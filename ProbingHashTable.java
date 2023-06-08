@@ -47,7 +47,7 @@ public class ProbingHashTable<K, V> implements HashTable<K, V> {
 
 
     public void insert(K key, V value) {
-        if ((double)this.count/this.capacity >= maxLoadFactor) {
+        if ((double)(this.count+1)/this.capacity >= maxLoadFactor) {
         	reHash();
         }
         Pair<K,V> p=new Pair<>(key, value);
@@ -90,14 +90,16 @@ public class ProbingHashTable<K, V> implements HashTable<K, V> {
     public int capacity() { return capacity; }
     
     @SuppressWarnings("unchecked")
-	private void reHash() {
-    	Pair<K, V>[] oldArr=this.arrH;
-    	this.arrH = (Pair<K, V>[]) new Pair[capacity*2]; 
-    	this.capacity=this.capacity*2;
-    	for(int i=0;i<this.capacity;i++) {
-    		if(oldArr[i]==null || oldArr[i].first()==null)
-    			insert(oldArr[i].first(), oldArr[i].second());
-    	}
-    }
-    
+  private void reHash() {
+        int k = (int) (Math.log(capacity) / Math.log(2)) + 1;
+        this.hashFunc = hashFactory.pickHash(k);
+        Pair<K, V>[] oldArr = this.arrH;
+        this.arrH = (Pair<K, V>[]) new Pair[capacity * 2];
+        this.capacity = this.capacity * 2;
+        for (int i = 0; i < oldArr.length; i++) {
+            if (oldArr[i] != null && oldArr[i].first() != null) {
+                insert(oldArr[i].first(), oldArr[i].second());
+            }
+        }
+    } 
 }
