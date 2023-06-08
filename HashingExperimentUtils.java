@@ -13,7 +13,7 @@ public class HashingExperimentUtils<K> {
     	int[]arr = chooseRandInsertions(size);
     	double t_s_i = System.nanoTime();
     	for(int i=0;i<arr.length;i++) {
-    		cht.insert(arr[i],1); //keep 1?
+    		cht.insert(arr[i],1); 
     	}
     	double t_f_i = System.nanoTime();
     	double diffI = t_f_i - t_s_i;
@@ -35,7 +35,7 @@ public class HashingExperimentUtils<K> {
     	int[]arr = chooseRandInsertions(size);
     	double t_s_i = System.nanoTime();
     	for(int i=0;i<arr.length;i++) {
-    		pht.insert(arr[i], 1); //keep 1?
+    		pht.insert(arr[i], 1); 
     	}
     	double t_f_i = System.nanoTime();
     	double diffI = t_f_i - t_s_i;
@@ -244,7 +244,9 @@ public class HashingExperimentUtils<K> {
         	avgInsert2=avgInsert2+res.first();
         	avgSearch2=avgSearch2+res.second();     
         }
-        System.out.println("The avg insertion time of Long to hash table with max load factor of 1 is: "+(avgInsert2/10));
-        System.out.println("The avg search time of Long in hash table with max load factor of 1 is: "+(avgSearch2/10));
-    }
+        System.out.println("The avg insertion time of String to hash table with max load factor of 1 is: "+(avgInsert2/10));
+        System.out.println("The avg search time of String in hash table with max load factor of 1 is: "+(avgSearch2/10));
+    
+    } 
+    	
 }
