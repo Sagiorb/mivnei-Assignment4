@@ -29,35 +29,37 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
         this.hashFunc = hashFactory.pickHash(k);
         this.count=0;
         this.arrHash= new LinkedList[capacity];
-        for (int i = 0; i < arrHash.length; i++) {
-            arrHash[i] = new LinkedList<>();
-        }
     }
 
     public V search(K key) {
-        boolean found=false;
-        V res=null;
-        int searchIndex=hashFunc.hash(key);
-        if(arrHash[searchIndex]!=null&&!arrHash[searchIndex].isEmpty()) {
-	        ListIterator<Pair<K,V>> it = arrHash[searchIndex].listIterator();
-	        while(it.hasNext()&&!found) {
-				Pair<K,V> curr=it.next();
-				if(curr.first().equals(key)) {
-					found=true;
-					res=curr.second();
-				}
-	        }
+        int index =hashFunc.hash(key);
+        LinkedList<Pair<K,V>> list = arrHash[index];
+
+        if (list != null) {
+            for (Pair<K,V> current : list) {
+                if (current.first() == key) {
+                    return current.second();
+                }
+            }
         }
-        return res;
+        return null;
     }
 
     public void insert(K key, V value) {
-        if((count+1) == capacity*maxLoadFactor) {
+        if((double)(this.count+1)/this.capacity >= maxLoadFactor) {
         	reHash();
         }
         int hashIndex=hashFunc.hash(key);
         Pair<K,V> add=new Pair<K, V>(key,value);
-        arrHash[hashIndex].addFirst(add);
+        if (arrHash[hashIndex] == null) {
+        	arrHash[hashIndex] = new LinkedList<>();
+        	arrHash[hashIndex].add(add);
+        }
+        
+        else {
+        	arrHash[hashIndex].addFirst(add);
+        }
+        
         count++;
     }
 
@@ -85,20 +87,20 @@ public class ChainedHashTable<K, V> implements HashTable<K, V> {
     public int capacity() { return capacity; }
     
     private void reHash() {
-    	int k = (int) (Math.log(capacity) / Math.log(2)) + 1;
+    	int k = ((int) (Math.log(capacity) / Math.log(2))) + 1;
     	capacity = capacity*2;
     	this.hashFunc = hashFactory.pickHash(k);
     	LinkedList<Pair<K,V>>[] reArr=new LinkedList[capacity];
-        for (int i = 0; i < reArr.length; i++) {
-            reArr[i] = new LinkedList<>();
-        }
-    	for(int i=0;i<arrHash.length;i++) {   
-    		while(!arrHash[i].isEmpty()) {
-    			Pair<K,V> curr=arrHash[i].removeFirst();    			
-    			K key=curr.first();
-    	    	int insertIndex=hashFunc.hash(key);
-    	    	reArr[insertIndex].addFirst(curr);
-    		}
+    	for (LinkedList<Pair<K,V>> list : arrHash) {
+            if (list != null) {
+                for (Pair<K,V> pair : list) {
+                    int newIndex = hashFunc.hash(pair.first());
+                    if (reArr[newIndex] == null) {
+                    	reArr[newIndex] = new LinkedList<>();
+                    }
+                    reArr[newIndex].add(pair);
+                }
+            }
     		arrHash=reArr;
     	}
     	
