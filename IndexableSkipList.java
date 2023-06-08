@@ -7,7 +7,7 @@ public class IndexableSkipList extends AbstractSkipList {
 
     @Override
     public Node find(int val) {
-        Node res = head;
+       Node res = head;
        for (int i=res.height(); i>=0;i--) {
     	   while(res.getNext(i)!=null & res.getNext(i).key() <= val) {
     		   res=res.getNext(i);
@@ -30,10 +30,27 @@ public class IndexableSkipList extends AbstractSkipList {
     }
 
     public int rank(int val) {
-        throw new UnsupportedOperationException("Replace this by your implementation");
+        Node res = head;
+        int count=0;
+        for (int i=res.height(); i>=0;i--) {
+     	   while(res.getNext(i)!=null && res.getNext(i).key() <= val) {
+     		   res=res.getNext(i);
+     		   count+=res.getCountArr()[i];
+     	   }
+        }
+        //what to do if val don't exist?
+        return count; 
     }
 
     public int select(int index) {
-        throw new UnsupportedOperationException("Replace this by your implementation");
+        Node res = head;
+        int count=0;
+        for (int i=res.height(); i>=0 & count!=index;i--) {
+     	   while(res.getNext(i)!=null && count+(res.getNext(i).getCountArr()[i]) <= index) {
+     		   res=res.getNext(i);
+     		   count+=res.getCountArr()[i];
+     	   }
+        }
+        return res.key(); 
     }
 }
