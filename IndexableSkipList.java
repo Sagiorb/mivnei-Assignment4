@@ -46,7 +46,7 @@ public class IndexableSkipList extends AbstractSkipList {
         Node res = head;
         int count=0;
         for (int i=res.height(); i>=0 & count!=index;i--) {
-     	   while(res.getNext(i)!=null && count+(res.getNext(i).getCountArr()[i]) <= index) {
+     	   while(res.getNext(i)!=null && res.getNext(i)!=tail && count+(res.getNext(i).getCountArr()[i]) <= index) {
      		   res=res.getNext(i);
      		   count+=res.getCountArr()[i];
      	   }
