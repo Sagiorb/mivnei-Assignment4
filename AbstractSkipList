@@ -30,7 +30,12 @@ abstract public class AbstractSkipList {
 
     public Node insert(int key) {
         int nodeHeight = generateHeight();
-
+        //added
+        if(nodeHeight > head.height()) {
+            head.setCountArr(nodeHeight);
+            tail.setCountArr(nodeHeight);
+        }
+        
         while (nodeHeight > head.height()) {
             increaseHeight();
         }
@@ -41,6 +46,7 @@ abstract public class AbstractSkipList {
         }
         
         Node newNode = new Node(key);
+        newNode.setCountArr(nodeHeight);
         //added
         int count=0;
         for (int level = 0; level <= nodeHeight && prevNode != null; ++level) {
@@ -53,10 +59,20 @@ abstract public class AbstractSkipList {
             //added
             newNode.countArr[level]+=count;
             while (prevNode != null && prevNode.height() == level) {
-            	prevNode = prevNode.getPrev(level);
                 //added
                 count+=prevNode.countArr[level];
+                
+            	prevNode = prevNode.getPrev(level);
+
             }
+        }
+        //added, this is to update count for every node after the added node
+        Node updatedNode=newNode.getNext(0);
+        for(int level = 0; level <= nodeHeight && prevNode != null; ++level) {
+        	updatedNode.countArr[level]=updatedNode.countArr[level]-newNode.countArr[level]+1;
+        	while(updatedNode != null&& updatedNode.height==level) {
+        		updatedNode=updatedNode.getNext(level);
+        	}
         }
 
         return newNode;
@@ -66,6 +82,9 @@ abstract public class AbstractSkipList {
         for (int level = 0; level <= node.height(); ++level) {
             Node prev = node.getPrev(level);
             Node next = node.getNext(level);
+            //added
+            next.countArr[level]=next.countArr[level]+node.countArr[level]-1;
+            		
             prev.setNext(level, next);
             next.setPrev(level, prev);
         }
@@ -171,6 +190,7 @@ abstract public class AbstractSkipList {
             ++height;
             this.next.add(next);
             this.prev.add(prev);
+            
         }
 
         //added
@@ -180,8 +200,8 @@ abstract public class AbstractSkipList {
         public int height() { return height; }
         public int key() { return key; }
         public void setCountArr(int length) {
-        	countArr=new int[length];
-        	for(int i = 0;i<length;i++) {
+        	countArr=new int[length+1];
+        	for(int i = 0;i<=length;i++) {
         		countArr[i]=1;
         	}
         }
