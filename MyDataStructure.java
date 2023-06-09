@@ -32,7 +32,7 @@ public class MyDataStructure {
         if(contains(value)) {
         	return false;
         }
-    	this.hashT.insert(value, null);
+    	this.hashT.insert(value, 1);
     	this.skipL.insert(value);
     	return true;
     }
