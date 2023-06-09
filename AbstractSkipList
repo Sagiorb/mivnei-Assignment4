@@ -82,7 +82,7 @@ abstract public class AbstractSkipList {
         for (int level = 0; level <= node.height(); ++level) {
             Node prev = node.getPrev(level);
             Node next = node.getNext(level);
-            //added
+            
             next.countArr[level]=next.countArr[level]+node.countArr[level]-1;
             		
             prev.setNext(level, next);
