@@ -41,9 +41,9 @@ public class MyDataStructure {
     	if(!contains(value)) {
         	return false;
         }
-    	
+    	AbstractSkipList.Node toDel=this.skipL.search(value); 
     	this.hashT.delete(value);
-    	//this.skipL.delete(toDel);
+    	this.skipL.delete(toDel);
     	return true;
     }
 
@@ -68,11 +68,12 @@ public class MyDataStructure {
         	return null;
         }
         List<Integer> res = new LinkedList<>();        
-        Node toAdd=this.skipL.search(low);
+        AbstractSkipList.Node toAdd=this.skipL.search(low); 
         res.add(toAdd.key());
         while(toAdd.key()<=high) {
-        	toAdd=this.skipL.successor(toAdd);
-        	res.add(toAdd.key);
+        	int toAddInt=this.skipL.successor(toAdd);
+        	res.add(toAddInt);
         }
+        return res;
     }
 }
