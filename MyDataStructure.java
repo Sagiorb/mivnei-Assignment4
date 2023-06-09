@@ -1,5 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
 
 public class MyDataStructure {
     /*
@@ -13,33 +15,64 @@ public class MyDataStructure {
      *
      * @param N The maximal number of items expected in the DS.
      */
-    public MyDataStructure(int N) {}
+	private HashTable<Integer, Integer> hashT;
+	private IndexableSkipList skipL;
+	private HashFactory<?> hashFactory;
+	
 
-    /*
-     * In the following functions,
-     * you should REMOVE the place-holder return statements.
-     */
+
+    public MyDataStructure(int N) {
+    	int k=(int)(Math.log(N)/Math.log(2));
+    	this.hashFactory=new ModularHash();
+    	this.hashT=new ProbingHashTable<Integer, Integer>((HashFactory<Integer>) hashFactory, k, 0.5);;
+    	this.skipL=new IndexableSkipList(0.33);
+    }
+
     public boolean insert(int value) {
-        return false;
+        if(contains(value)) {
+        	return false;
+        }
+    	this.hashT.insert(value, null);
+    	this.skipL.insert(value);
+    	return true;
     }
 
     public boolean delete(int value) {
-        return false;
+    	if(!contains(value)) {
+        	return false;
+        }
+    	
+    	this.hashT.delete(value);
+    	//this.skipL.delete(toDel);
+    	return true;
     }
 
     public boolean contains(int value) {
-        return false;
+    	if(hashT.search(value)!=null) {
+        	return true;
+        } else {
+        	return false;
+        }
     }
 
     public int rank(int value) {
-        return -1;
+        return this.skipL.rank(value);
     }
 
     public int select(int index) {
-        return Integer.MIN_VALUE;
+        return this.skipL.select(index);
     }
 
     public List<Integer> range(int low, int high) {
-        return null;
+        if(!contains(low)) {
+        	return null;
+        }
+        List<Integer> res = new LinkedList<>();        
+        Node toAdd=this.skipL.search(low);
+        res.add(toAdd.key());
+        while(toAdd.key()<=high) {
+        	toAdd=this.skipL.successor(toAdd);
+        	res.add(toAdd.key);
+        }
     }
 }
