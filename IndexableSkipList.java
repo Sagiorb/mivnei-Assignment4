@@ -9,13 +9,12 @@ public class IndexableSkipList extends AbstractSkipList {
     public Node find(int val) {
        Node res = head;
        for (int i=res.height(); i>=0;i--) {
-    	   while(res.getNext(i)!=null & res.getNext(i).key() <= val) {
+    	   while(res.getNext(i)!=null && res.getNext(i).key() <= val) {
     		   res=res.getNext(i);
     	   }
        }
        return res; 
     }
-
     @Override
     public int generateHeight() {
         int height = 0;
