@@ -36,14 +36,15 @@ public class ProbingHashTable<K, V> implements HashTable<K, V> {
         V res = null;
         boolean found = false;
         for (int i = 0; i < this.capacity && !found; i++) {
-            if (arrH[toSearch] != null && arrH[toSearch].first() == key) {
+            if (arrH[toSearch] != null && arrH[toSearch].first().equals(key)) {
                 res = arrH[toSearch].second();
                 found = true;
-                toSearch = HashingUtils.mod(toSearch + 1, this.capacity);
             }
+            toSearch = HashingUtils.mod(toSearch + 1, this.capacity);
         }
         return res;
     }
+
 
 
     public void insert(K key, V value) {
