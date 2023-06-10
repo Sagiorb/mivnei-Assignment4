@@ -70,9 +70,13 @@ public class MyDataStructure {
         List<Integer> res = new LinkedList<>();        
         AbstractSkipList.Node toAdd=this.skipL.search(low); 
         res.add(toAdd.key());
-        while(toAdd.key()<=high) {
-        	int toAddInt=this.skipL.successor(toAdd);
-        	res.add(toAddInt);
+        int toAddInt=toAdd.key();
+        while(toAddInt<=high) {
+        	toAddInt=this.skipL.successor(toAdd);
+        	toAdd=this.skipL.search(toAddInt); 
+        	if(toAddInt!=Integer.MAX_VALUE) {
+        		res.add(toAddInt);
+        	}
         }
         return res;
     }
